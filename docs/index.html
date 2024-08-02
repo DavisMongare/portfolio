@@ -82,22 +82,21 @@
         <p><strong>29 April 2024</strong></p>
 
         <h2>Project Overview</h2>
-        <p>This project aims to leverage text mining techniques to analyze and gain insights into the dissemination of information about LLBean and its products on Twitter.
-            The insights derived from this analysis are intended to inform strategic decision-making for social media marketing efforts.
-        </p>
+        <p>This project aims to leverage text mining techniques to analyze and gain insights into the dissemination of information about LLBean and its products on Twitter. The insights derived from this analysis are intended to inform strategic decision-making for social media marketing efforts.</p>
 
         <h2>Data Collection and Preparation</h2>
         <h3>Step 1: Data Collection</h3>
         <pre>
-# install and load all the needed R packages
-# install.packages(c("tidyverse", "tidytext", "wordcloud", "igraph","ggraph", "tidygraph"), repos='http://cran.us.r-project.org')
+# Install and load all the needed R packages
+# install.packages(c("tidyverse", "tidytext", "wordcloud", "igraph", "ggraph", "tidygraph"), repos='http://cran.us.r-project.org')
 library(igraph) 
 library(ggraph)
 library(tidyverse)
 library(tidytext)
 library(wordcloud)
 library(tidygraph)
-# import the Twitter data
+
+# Import the Twitter data
 LLBean_complete <- read_csv("https://filedn.com/lJpzjOtA91quQEpwdrgCvcy/Business%20Data%20Mining%20and%20Knowledge%20Discovery/Datasets/LLBean.csv")
 LLBean_complete <- LLBean_complete %>% filter(language == "en") %>% select(-language)
         </pre>
@@ -120,15 +119,14 @@ LLBean
 ## 10 @LLBean free shipping for the kitten too?  http://t.co/Nfpm4O2ws5            
 ## # … with 9,990 more rows
         </pre>
-
         <h3>Step 2: Data Cleaning and Parsing</h3>
         <h4>Text Cleaning</h4>
         <pre>
 LLBean$tweet_clean <- iconv(LLBean$tweet, from = "UTF-8", to = "ASCII", sub = "") 
 LLBean$tweet_clean <- gsub("https\\S*", "", LLBean$tweet_clean)
-LLBean$tweet_clean <- gsub("?\\$\\w+ ?", "", LLBean$tweet_clean)
-LLBean$tweet_clean <- gsub("?\\#\\w+ ?", "", LLBean$tweet_clean)
-LLBean$tweet_clean <- gsub("?\\@\\w+ ?", "", LLBean$tweet_clean)
+LLBean$tweet_clean <- gsub("\\$\\w+ ?", "", LLBean$tweet_clean)
+LLBean$tweet_clean <- gsub("\\#\\w+ ?", "", LLBean$tweet_clean)
+LLBean$tweet_clean <- gsub("\\@\\w+ ?", "", LLBean$tweet_clean)
 LLBean$tweet_clean <- gsub("amp", "", LLBean$tweet_clean) 
 LLBean$tweet_clean <- gsub("[\r\n]", "", LLBean$tweet_clean)
 LLBean$tweet_clean <- gsub("[[:punct:]]", "", LLBean$tweet_clean)
@@ -156,6 +154,8 @@ LLBean_tibble
 ##  9     9 "Just another day at the office when the Boot parks in front of our ho…
 ## 10    10 "free shipping for the kitten too httptcoNfpmOws"                      
 ## # … with 9,990 more rows
+        </pre>
+        <pre>
 LLBean_tidy <- LLBean_tibble %>% unnest_tokens(word, text)
 LLBean_tidy
 ## # A tibble: 138,715 × 2
@@ -172,6 +172,7 @@ LLBean_tidy
 ##  9     2 more  
 ## 10     2 respect 
 ## # … with 138,705 more rows
+        </pre>
         <pre>
 LLBean_tidy <- LLBean_tidy %>% anti_join(stop_words)
 LLBean_tidy
