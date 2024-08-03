@@ -3,140 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Davis Mongare - Data Science Portfolio</title>
+    <title>Davis Mongare's Portfolio</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
+            background-color: #f4f4f4;
+            color: #333;
         }
         header {
-            background-color: #4CAF50;
+            background-color: #ff6600;
             color: white;
-            padding: 1em 0;
+            padding: 20px 0;
             text-align: center;
         }
         nav {
             display: flex;
             justify-content: center;
-            background-color: #333;
+            background-color: #008000;
+            padding: 10px;
         }
         nav a {
             color: white;
-            padding: 14px 20px;
             text-decoration: none;
-            text-align: center;
+            margin: 0 15px;
+            font-weight: bold;
         }
-        nav a:hover {
-            background-color: #ddd;
-            color: black;
+        section {
+            padding: 20px;
+            margin: 10px;
         }
-        .container {
+        .about, .projects, .skills, .contact {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
         }
         footer {
             background-color: #333;
             color: white;
             text-align: center;
-            padding: 1em 0;
+            padding: 10px 0;
             position: fixed;
             width: 100%;
             bottom: 0;
         }
-        .code {
-            background-color: #272822;
-            color: #f8f8f2;
-            padding: 10px;
-            border-radius: 5px;
-            overflow-x: auto;
+        .animate {
+            animation: move 3s infinite alternate;
         }
-        .image-section {
-            text-align: center;
-            margin: 20px 0;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-        input, textarea {
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
+        @keyframes move {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Davis Mongare</h1>
-        <p>Data Engineer | Data Scientist | Civil Engineer</p>
+        <h1>Davis Mongare's Data Science & Engineering Portfolio</h1>
     </header>
     <nav>
-        <a href="index.html">Home</a>
-        <a href="Twitter-Text-Mining.html">Twitter Text Mining</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
+        <a href="#about">About Me</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
     </nav>
-    <div class="container">
-        <!-- Home Section -->
-        <h2>Welcome to My Data Science Portfolio</h2>
-        <p>This portfolio showcases my projects and skills in data science, data engineering, and civil engineering. Explore my work through the various sections provided in the navigation bar.</p>
-        <h3>Featured Projects</h3>
-        <ul>
-            <li><a href="Twitter-Text-Mining.html">Twitter Text Mining</a></li>
-        </ul>
-    </div>
-    <div class="container">
-        <!-- Twitter Text Mining Section -->
-        <h2>Twitter Text Mining Project</h2>
-        <p>This project involves analyzing tweets to uncover patterns, trends, and sentiments. The analysis leverages various text mining techniques and libraries to process and visualize the data effectively.</p>
-        
-        <h3>Data Preprocessing</h3>
-        <pre class="code">
-        LLBean_tidy <- LLBean_tidy %>% anti_join(stop_words)
-        LLBean_tidy
-        ## # A tibble: 90,379 × 2
-        ##     line word   
-        ##    <int> <chr>  
-        ##  1     2 store  
-        ##  ...
-        </pre>
-
-        <h3>Visualization</h3>
-        <div class="image-section">
-            <img src="path_to_your_image.png" alt="Visualization of Tweet Data">
-        </div>
-    </div>
-    <div class="container">
-        <!-- About Section -->
+    <section id="about" class="about">
         <h2>About Me</h2>
-        <p>I am Davis Mongare, a Data Engineer with a background in Civil Engineering and expertise in data science and text mining. I have a passion for analyzing data and providing actionable insights.</p>
-        <h3>My Skills</h3>
+        <p>Hi, I'm Davis Mongare. I hold a Master's degree in Data Science and Engineering, and my background is in Civil Engineering. I am passionate about data science and engineering, and I constantly strive to learn from trends and innovations in these fields. When I'm not working on 'Wall E' (my computer) doing data mining or blogging about AI, you'll find me traveling, hiking, cruising, or balling. My ambition drives me to explore new horizons and push the boundaries of what's possible.</p>
+    </section>
+    <section id="projects" class="projects">
+        <h2>Projects</h2>
+        <p>Here you will find some of the projects I have worked on, showcasing my skills and expertise in data science and engineering.</p>
+        <!-- Add your project details here -->
+    </section>
+    <section id="skills" class="skills">
+        <h2>Skills</h2>
         <ul>
-            <li>Data Engineering</li>
-            <li>Data Science</li>
-            <li>Text Mining</li>
+            <li>Data Mining</li>
             <li>Machine Learning</li>
-            <li>Visualization</li>
+            <li>Data Visualization</li>
+            <li>Statistical Analysis</li>
+            <li>Programming (Python, R, SQL)</li>
+            <li>Big Data Technologies</li>
         </ul>
-    </div>
-    <div class="container">
-        <!-- Contact Section -->
-        <h2>Contact Me</h2>
-        <form action="your_form_submission_url" method="post">
-            <input type="text" name="name" placeholder="Your Name" required>
-            <input type="email" name="email" placeholder="Your Email" required>
-            <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
-            <input type="submit" value="Send">
-        </form>
-    </div>
+    </section>
+    <section id="contact" class="contact">
+        <h2>Contact</h2>
+        <p>Feel free to reach out to me via email at davis.mongare@example.com or connect with me on LinkedIn.</p>
+    </section>
     <footer>
         <p>&copy; 2024 Davis Mongare. All rights reserved.</p>
     </footer>
