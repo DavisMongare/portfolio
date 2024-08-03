@@ -3,245 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Twitter Text Mining</title>
+    <title>Davis Mongare - Data Science Portfolio</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
+            background-color: #f4f4f9;
         }
         header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1em 0;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
             background-color: #333;
-            color: #fff;
-            padding: 20px 0;
+        }
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
             text-align: center;
         }
-        main {
-            margin: 20px;
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        .container {
             padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            animation: fadeIn 1s ease-in-out;
-        }
-        h1, h2, h3 {
-            text-align: center;
-        }
-        p, pre {
-            white-space: pre-wrap;
-        }
-        h2 {
-            margin-top: 40px;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
-        }
-        h3 {
-            margin-top: 30px;
-            color: #555;
-        }
-        pre {
-            background: #f9f9f9;
-            padding: 10px;
-            border-radius: 5px;
-            overflow: auto;
-            max-height: 400px;
-            margin-bottom: 20px;
         }
         footer {
-            text-align: center;
-            padding: 10px 0;
             background-color: #333;
-            color: #fff;
+            color: white;
+            text-align: center;
+            padding: 1em 0;
             position: fixed;
             width: 100%;
             bottom: 0;
         }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+        .code {
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
         }
-        .fadeIn {
-            animation: fadeIn 2s ease-in-out;
+        .image-section {
+            text-align: center;
+            margin: 20px 0;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input, textarea {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Twitter Text Mining</h1>
+        <h1>Davis Mongare</h1>
+        <p>Data Engineer | Data Scientist | Civil Engineer</p>
     </header>
-    <main>
-        <h2>LLBean Product Insights</h2>
-        <h3>Davis Mongare</h3>
-        <p><strong>29 April 2024</strong></p>
-
-        <h2>Project Overview</h2>
-        <p>This project aims to leverage text mining techniques to analyze and gain insights into the dissemination of information about LLBean and its products on Twitter. The insights derived from this analysis are intended to inform strategic decision-making for social media marketing efforts.</p>
-
-        <h2>Data Collection and Preparation</h2>
-        <h3>Step 1: Data Collection</h3>
-        <pre>
-# Install and load all the needed R packages
-# install.packages(c("tidyverse", "tidytext", "wordcloud", "igraph", "ggraph", "tidygraph"), repos='http://cran.us.r-project.org')
-library(igraph) 
-library(ggraph)
-library(tidyverse)
-library(tidytext)
-library(wordcloud)
-library(tidygraph)
-
-# Import the Twitter data
-LLBean_complete <- read_csv("https://filedn.com/lJpzjOtA91quQEpwdrgCvcy/Business%20Data%20Mining%20and%20Knowledge%20Discovery/Datasets/LLBean.csv")
-LLBean_complete <- LLBean_complete %>% filter(language == "en") %>% select(-language)
-        </pre>
-        <p><strong>Data Collection Summary:</strong> The dataset comprises 239,728 English-language tweets mentioning LLBean. To manage processing constraints, a random subset of 10,000 tweets was selected for this analysis.</p>
-        <pre>
-LLBean <- LLBean_complete %>% sample_n(10000)
-LLBean
-## # A tibble: 10,000 × 1
-##    tweet                                                                        
-##    <chr>                                                                        
-##  1 #NAME?                                                                       
-##  2 There is no other store that I have more respect for than @LLBean #FavoriteS…
-##  3 @Matt_Whitcomb @LLBean That is a big bear!                                   
-##  4 @_LLBean 1 ply? Might as well wipe my ass with a dryer sheet. Thin ass tp!!  
-##  5 .@ThisAmerLife absolutely loved today's episode #591 ! Zoe Chase +  @LLBean …
-##  6 So good I had to share! Check out all the items I'm loving on @Poshmarkapp f…
-##  7 @amanda_mauder lands end is different than LLBean. ;p                        
-##  8 @WellToDoYou @llbean would totally love to splurge to the shearling lined si…
-##  9 #TBT Just another day at the office when the @LLBean Boot parks in front of …
-## 10 @LLBean free shipping for the kitten too?  http://t.co/Nfpm4O2ws5            
-## # … with 9,990 more rows
-        </pre>
-        <h3>Step 2: Data Cleaning and Parsing</h3>
-        <h4>Text Cleaning</h4>
-        <pre>
-LLBean$tweet_clean <- iconv(LLBean$tweet, from = "UTF-8", to = "ASCII", sub = "") 
-LLBean$tweet_clean <- gsub("https\\S*", "", LLBean$tweet_clean)
-LLBean$tweet_clean <- gsub("\\$\\w+ ?", "", LLBean$tweet_clean)
-LLBean$tweet_clean <- gsub("\\#\\w+ ?", "", LLBean$tweet_clean)
-LLBean$tweet_clean <- gsub("\\@\\w+ ?", "", LLBean$tweet_clean)
-LLBean$tweet_clean <- gsub("amp", "", LLBean$tweet_clean) 
-LLBean$tweet_clean <- gsub("[\r\n]", "", LLBean$tweet_clean)
-LLBean$tweet_clean <- gsub("[[:punct:]]", "", LLBean$tweet_clean)
-LLBean$tweet_clean <- gsub('[[:digit:]]+', "", LLBean$tweet_clean)
-LLBean$tweet_clean <- gsub("(RT|via)((?:\\b\\w*@\\w+)+)","", LLBean$tweet_clean)
-LLBean$tweet_clean <- trimws(gsub("\\s+", " ", LLBean$tweet_clean))
-        </pre>
-        <p><strong>Data Cleaning Summary:</strong> The text cleaning process involved several steps to remove URLs, special characters, punctuation, numbers, retweets, and excessive whitespace, resulting in a dataset suitable for text mining.</p>
-
-        <h4>Text Parsing</h4>
-        <pre>
-LLBean_tibble <- tibble(line = 1:nrow(LLBean), text = LLBean$tweet_clean)
-LLBean_tibble
-## # A tibble: 10,000 × 2
-##     line text                                                                   
-##    <int> <chr>                                                                  
-##  1     1 ""                                                                     
-##  2     2 "There is no other store that I have more respect for than"            
-##  3     3 "That is a big bear"                                                   
-##  4     4 "ply Might as well wipe my ass with a dryer sheet Thin ass tp"         
-##  5     5 "absolutely loved todays episode Zoe Chase returns Simon Rich All Amaz…
-##  6     6 "So good I had to share Check out all the items Im loving on from"     
-##  7     7 "lands end is different than LLBean p"                                 
-##  8     8 "would totally love to splurge to the shearling lined signature boots …
-##  9     9 "Just another day at the office when the Boot parks in front of our ho…
-## 10    10 "free shipping for the kitten too httptcoNfpmOws"                      
-## # … with 9,990 more rows
-        </pre>
-        <pre>
-LLBean_tidy <- LLBean_tibble %>% unnest_tokens(word, text)
-LLBean_tidy
-## # A tibble: 138,715 × 2
-##     line word   
-##    <int> <chr>  
-##  1     2 there  
-##  2     2 is     
-##  3     2 no     
-##  4     2 other  
-##  5     2 store  
-##  6     2 that  
-##  7     2 i     
-##  8     2 have  
-##  9     2 more  
-## 10     2 respect 
-## # … with 138,705 more rows
-        </pre>
-        <pre>
-LLBean_tidy <- LLBean_tidy %>% anti_join(stop_words)
-LLBean_tidy
-## # A tibble: 90,379 × 2
-##     line word   
-##    <int> <chr>  
-##  1     2 store  
-##  2     2 respect
-##  3     3 big    
-##  4     3 bear   
-##  5     4 ply    
-##  6     4 might
-##  7     4 well
-##  8     4 wipe
-##  9     4 ass
-## 10     4 dryer
-## # … with 90,369 more rows
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="Twitter-Text-Mining.html">Twitter Text Mining</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+    <div class="container">
+        <!-- Home Section -->
+        <h2>Welcome to My Data Science Portfolio</h2>
+        <p>This portfolio showcases my projects and skills in data science, data engineering, and civil engineering. Explore my work through the various sections provided in the navigation bar.</p>
+        <h3>Featured Projects</h3>
+        <ul>
+            <li><a href="Twitter-Text-Mining.html">Twitter Text Mining</a></li>
+        </ul>
+    </div>
+    <div class="container">
+        <!-- Twitter Text Mining Section -->
+        <h2>Twitter Text Mining Project</h2>
+        <p>This project involves analyzing tweets to uncover patterns, trends, and sentiments. The analysis leverages various text mining techniques and libraries to process and visualize the data effectively.</p>
+        
+        <h3>Data Preprocessing</h3>
+        <pre class="code">
+        LLBean_tidy <- LLBean_tidy %>% anti_join(stop_words)
+        LLBean_tidy
+        ## # A tibble: 90,379 × 2
+        ##     line word   
+        ##    <int> <chr>  
+        ##  1     2 store  
+        ##  ...
         </pre>
 
-        <h2>Text Mining and Analysis</h2>
-
-        <h3>Word Frequency Analysis</h3>
-        <pre>
-LLBean_freq <- LLBean_tidy %>% count(word, sort = TRUE)
-LLBean_freq
-## # A tibble: 10,013 × 2
-##    word         n
-##    <chr>    <int>
-##  1 llbean    4050
-##  2 love       425
-##  3 just       419
-##  4 like       394
-##  5 get        371
-##  6 will       334
-##  7 boots      306
-##  8 good       305
-##  9 time       300
-## 10 can        283
-        </pre>
-        <p>Visualize word frequency using a bar chart:</p>
-        <pre>
-LLBean_freq %>% filter(n > 300) %>%
-ggplot(aes(reorder(word, n), n)) +
-geom_bar(stat = "identity", fill = "blue", color = "black") +
-xlab("Words") +
-ylab("Count") +
-coord_flip() +
-theme_minimal()
-        </pre>
-
-        <h3>Word Cloud</h3>
-        <p>Visualizing word frequency with a word cloud provides a quick sense of the most common words:</p>
-        <pre>
-LLBean_freq %>% with(wordcloud(word, n, max.words = 100, colors=brewer.pal(8, "Dark2")))
-        </pre>
-
-        <h3>Word Co-occurrence Network</h3>
-        <p>To uncover relationships between words, a network of word co-occurrences was constructed and visualized:</p>
-        <pre>
-word_pairs <- LLBean_tidy %>% pairwise_count(word, line, sort = TRUE)
-word_pairs %>% filter(n >= 20) %>% graph_from_data_frame() %>% ggraph(layout = "fr") +
-geom_edge_link(aes(edge_alpha = n), show.legend = FALSE) +
-geom_node_point(color = "lightblue", size = 5) +
-geom_node_text(aes(label = name), repel = TRUE) +
-theme_void()
-        </pre>
-    </main>
+        <h3>Visualization</h3>
+        <div class="image-section">
+            <img src="path_to_your_image.png" alt="Visualization of Tweet Data">
+        </div>
+    </div>
+    <div class="container">
+        <!-- About Section -->
+        <h2>About Me</h2>
+        <p>I am Davis Mongare, a Data Engineer with a background in Civil Engineering and expertise in data science and text mining. I have a passion for analyzing data and providing actionable insights.</p>
+        <h3>My Skills</h3>
+        <ul>
+            <li>Data Engineering</li>
+            <li>Data Science</li>
+            <li>Text Mining</li>
+            <li>Machine Learning</li>
+            <li>Visualization</li>
+        </ul>
+    </div>
+    <div class="container">
+        <!-- Contact Section -->
+        <h2>Contact Me</h2>
+        <form action="your_form_submission_url" method="post">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
+            <input type="submit" value="Send">
+        </form>
+    </div>
     <footer>
-        <p>© 2024 Davis Mongare</p>
+        <p>&copy; 2024 Davis Mongare. All rights reserved.</p>
     </footer>
 </body>
 </html>
